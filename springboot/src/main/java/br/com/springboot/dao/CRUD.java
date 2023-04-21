@@ -1,6 +1,6 @@
 package br.com.springboot.dao;
-import java.util.List;
 
+import java.util.List;
 
 public interface CRUD<T, ID> {
     T pesquisaPeloId(ID id);

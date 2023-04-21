@@ -2,20 +2,20 @@ package br.com.springboot.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
-import br.com.springboot.model.Cliente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
-@Transactional
-@Repository
+import org.springframework.stereotype.Repository;
 
+import br.com.springboot.model.Cliente;
+
+@Repository
+@Transactional
 public class ClienteDAO implements CRUD<Cliente, Long> {
 
-    @PersistenceContext
+	@PersistenceContext
     private EntityManager entityManager;
 	
 	@Override
@@ -44,6 +44,3 @@ public class ClienteDAO implements CRUD<Cliente, Long> {
 		entityManager.remove(cliente);
 	}
 }
-    
-    
-

@@ -13,77 +13,77 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.springboot.bo.ClienteBO;
-import br.com.springboot.model.Cliente;
+import br.com.springboot.bo.FornecedorBO;
+import br.com.springboot.model.Fornecedor;
 
 @Controller
-@RequestMapping("/clientes")
-public class ClienteController {
+@RequestMapping("/fornecedores")
+public class FornecedorController {
 	
 	@Autowired
-	private ClienteBO clienteBO;
+	private FornecedorBO fornecedorBO;
 	
 	@RequestMapping(value = "/novo", method = RequestMethod.GET)
 	public ModelAndView novo(ModelMap model) {
-		model.addAttribute("cliente", new Cliente());
-		return new ModelAndView("/cliente/formulario", model);
+		model.addAttribute("fornecedor", new Fornecedor());
+		return new ModelAndView("/fornecedor/formulario", model);
 	}
 	
 	@RequestMapping(value = "", method=RequestMethod.POST)
-	public String salva(@Valid @ModelAttribute Cliente cliente, BindingResult result, RedirectAttributes attr) {
+	public String salva(@Valid @ModelAttribute Fornecedor fornecedor,
+			BindingResult result,
+			RedirectAttributes attr) {
 		if (result.hasErrors())
-			return "cliente/formulario";
+			return "fornecedor/formulario";
 		
-		if (cliente.getId() == null) {
-			clienteBO.insere(cliente);
-			attr.addFlashAttribute("feedback", "Cliente foi cadastrado com sucesso");
+		if (fornecedor.getId() == null) {
+			fornecedorBO.insere(fornecedor);
+			attr.addFlashAttribute("feedback", "O fornecedor foi cadastrado com sucesso");
 		}
 		else { 
-			clienteBO.atualiza(cliente);
-			attr.addFlashAttribute("feedback", "Cliente foi atualizado com sucesso");
+			fornecedorBO.atualiza(fornecedor);
+			attr.addFlashAttribute("feedback", "O fornecedor foi atualizado com sucesso");
 		}
-		return "redirect:/clientes";
+		return "redirect:/fornecedores";
 	}
 	
 	@RequestMapping(value = "", method=RequestMethod.GET)
 	public ModelAndView lista(ModelMap model) {
-		model.addAttribute("clientes", clienteBO.listaTodos());
-		return new ModelAndView("/cliente/lista", model);		
+		model.addAttribute("fornecedores", fornecedorBO.listaTodos());
+		return new ModelAndView("/fornecedor/lista", model);		
 	}
 
 	@RequestMapping(value = "/edita/{id}", method = RequestMethod.GET)
 	public ModelAndView edita(@PathVariable("id") Long id, ModelMap model) {
 		try {
-			model.addAttribute("cliente", clienteBO.pesquisaPeloId(id));
+			model.addAttribute("fornecedor", fornecedorBO.pesquisaPeloId(id));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ModelAndView("/cliente/formulario", model);
+		return new ModelAndView("/fornecedor/formulario", model);
 	}
 	
 	@RequestMapping(value = "/inativa/{id}", method = RequestMethod.GET)
 	public String inativa(@PathVariable("id") Long id, RedirectAttributes attr) {
-		System.out.println(id);
 		try {
-			Cliente cliente = clienteBO.pesquisaPeloId(id); 
-			clienteBO.inativa(cliente);
-			attr.addFlashAttribute("feedback", "Cliente foi inativado com sucesso");
+			Fornecedor fornecedor = fornecedorBO.pesquisaPeloId(id); 
+			fornecedorBO.inativa(fornecedor);
+			attr.addFlashAttribute("feedback", "O fornecedor foi inativado com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/clientes";
+		return "redirect:/fornecedores";
 	}
 	
 	@RequestMapping(value = "/ativa/{id}", method = RequestMethod.GET)
 	public String ativa(@PathVariable("id") Long id, RedirectAttributes attr) {
-		System.out.println(id);
 		try {
-			Cliente cliente = clienteBO.pesquisaPeloId(id); 
-			clienteBO.ativa(cliente);
-			attr.addFlashAttribute("feedback", "Cliente foi ativado com sucesso");
+			Fornecedor fornecedor = fornecedorBO.pesquisaPeloId(id); 
+			fornecedorBO.ativa(fornecedor);
+			attr.addFlashAttribute("feedback", "O fornecedor foi ativado com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/clientes";
+		return "redirect:/fornecedores";
 	}
 }
