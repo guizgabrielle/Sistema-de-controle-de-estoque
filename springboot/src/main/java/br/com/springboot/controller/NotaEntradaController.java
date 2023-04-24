@@ -42,9 +42,14 @@ public class NotaEntradaController {
 	@RequestMapping(value="", method=RequestMethod.POST)
 	public String salva(@Valid @ModelAttribute NotaEntrada notaEntrada,
 			BindingResult result,
-			RedirectAttributes attr) {
+			RedirectAttributes attr,
+			ModelMap model) {
+		
+		if (notaEntrada.getFornecedor().getId() == null)
+			result.rejectValue("fornecedor", "field.required");
 		
 		if (result.hasErrors()) {
+			model.addAttribute("fornecedores", fornecedorBO.listaTodos());
 			return "/nota-entrada/formulario";
 		}
 		
@@ -58,23 +63,23 @@ public class NotaEntradaController {
 		
 		return "redirect:/nota-entrada";
 	}
-
-    @RequestMapping(value="", method=RequestMethod.GET)
-    public ModelAndView lista (ModelMap model) {
-        model.addAttribute("notas", notaEntradaBO.listaTodos());
-        return new ModelAndView("/nota-entrada/lista", model);
-    }
-
+	
+	@RequestMapping(value="", method=RequestMethod.GET)
+	public ModelAndView lista(ModelMap model) {
+		model.addAttribute("notas", notaEntradaBO.listaTodos());
+		return new ModelAndView("/nota-entrada/lista", model);
+	}
+	
 	@RequestMapping(value="/{id}/item", method=RequestMethod.GET)
-	public ModelAndView produto (@PathVariable("id") Long id, ModelMap model) {
+	public ModelAndView produto(@PathVariable("id") Long id, ModelMap model) {
 		NotaEntradaItem nei = new NotaEntradaItem();
 		NotaEntrada ne = notaEntradaBO.pesquisaPeloId(id);
 		nei.setNotaEntrada(ne);
 		model.addAttribute("notaEntradaItem", nei);
 		model.addAttribute("produtos", produtoBO.listaTodos());
-		return new ModelAndView("/nota-entrada-item/formulario", model); }
-
-
+		return new ModelAndView("/nota-entrada-item/formulario", model);
+	}
+	
 	@RequestMapping(value="/edita/{id}", method=RequestMethod.GET)
 	public ModelAndView edita(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("notaEntradaItem", new NotaEntradaItem());
@@ -90,7 +95,4 @@ public class NotaEntradaController {
 		attr.addFlashAttribute("feedback", "Nota entrada removida com sucesso");
 		return "redirect:/nota-entrada";
 	}
-		
-
 }
-

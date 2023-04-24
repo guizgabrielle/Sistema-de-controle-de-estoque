@@ -1,7 +1,9 @@
 package br.com.springboot.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -30,6 +33,9 @@ public class NotaEntrada {
 	@ManyToOne
 	@JoinColumn(name="fornecedor_id", nullable=false)
 	private Fornecedor fornecedor;
+
+	@OneToMany(mappedBy="notaEntrada", cascade = CascadeType.ALL)
+	private List<NotaEntradaItem> itens;
 	
 	@Transient
 	private Float total;
@@ -59,10 +65,24 @@ public class NotaEntrada {
 	}
 
 	public Float getTotal() {
+		this.total = 0f;
+		if (this.itens != null) {
+			for (NotaEntradaItem notaEntradaItem : itens) {
+				total += notaEntradaItem.getValorTotal();
+			}
+		}
 		return total;
 	}
 
 	public void setTotal(Float total) {
 		this.total = total;
+	}
+
+	public List<NotaEntradaItem> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<NotaEntradaItem> itens) {
+		this.itens = itens;
 	}
 }
