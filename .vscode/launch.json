@@ -5,6 +5,13 @@
             "name": "SpringbootApplication",
             "request": "launch",
             "mainClass": "br.com.springboot.SpringbootApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "SpringbootApplication",
+            "request": "launch",
+            "mainClass": "br.com.springboot.SpringbootApplication",
             "projectName": "springboot"
         },
         {
