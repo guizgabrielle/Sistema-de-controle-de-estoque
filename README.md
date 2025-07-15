@@ -46,3 +46,16 @@ Sistema desenvolvido em **Java Spring Boot** com interface web integrada (HTML/C
 1. Clone o repositório:  
    ```bash
    git clone https://github.com/guizgabrielle/Sistema-de-controle-de-estoque.git
+
+2. Configure as credenciais do MySQL no arquivo `src/main/resources/application.properties`.  
+3. Execute o banco de dados MySQL localmente.  
+4. Compile e rode a aplicação via Maven:  
+   ```bash
+   mvn spring-boot:run
+   ```  
+5. Acesse o sistema via navegador em:  
+   ```
+   http://localhost:8080/
+   ```  
+6. Para testar endpoints REST, utilize o Postman com as rotas configuradas.
+   
